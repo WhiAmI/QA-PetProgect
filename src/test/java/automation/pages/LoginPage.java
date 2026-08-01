@@ -1,17 +1,16 @@
 package automation.pages;
 
+import automation.base.BasePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import automation.pages.ProductsPage;
 
-public class LoginPage {
-    private WebDriver driver;
+public class LoginPage extends BasePage {
     private By usernameField = By.id("user-name");
     private By passwordField = By.id("password");
     private By loginButton = By.id("login-button");
 
     public LoginPage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
     }
 
     public void open() {
@@ -19,24 +18,25 @@ public class LoginPage {
     }
 
     public void enterUsername(String username) {
-        driver.findElement(usernameField).sendKeys(username);
+        type(usernameField, username);
     }
 
     public void enterPassword(String password) {
-        driver.findElement(passwordField).sendKeys(password);
+        type(passwordField, password);
     }
 
     public ProductsPage clickLogin() {
-        driver.findElement(loginButton).click();
+        click(loginButton);
         return new ProductsPage(driver);
     }
 
     public String getUsernameValue() {
-        return driver.findElement(usernameField).getAttribute("value");
+        return getValue(usernameField);
+
     }
 
     public String getPasswordValue() {
-        return driver.findElement(passwordField).getAttribute("value");
+        return getValue(passwordField);
     }
 
 }
