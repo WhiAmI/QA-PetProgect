@@ -12,15 +12,11 @@ public class LoginTest extends BaseTest {
         LoginPage loginPage = new LoginPage(driver);
 
         loginPage.open();
-
         loginPage.enterUsername("standard_user");
         loginPage.enterPassword("secret_sauce");
 
-        //String actualUsername = loginPage.getUsernameValue();
-        //String actualPassword = loginPage.getPasswordValue();
         ProductsPage productsPage = loginPage.clickLogin();
 
-        //ProductsPage productsPage = new ProductsPage(driver);
         String actualTitle = productsPage.getProductTitleText();
 
         Assertions.assertEquals("Products", actualTitle);
