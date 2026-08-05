@@ -1,5 +1,7 @@
 package automation.base;
 
+import automation.pages.LoginPage;
+import automation.pages.ProductsPage;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.WebDriver; //Для интерфейса абстрактное упр браузером
@@ -10,6 +12,12 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 
 public class BaseTest {
     protected WebDriver driver;
+
+    public ProductsPage login(String username, String password){
+        LoginPage loginPage = new LoginPage(driver);
+
+        return loginPage.loginAs(username, password);
+    }
 
     @BeforeEach
     public void setUp() {
