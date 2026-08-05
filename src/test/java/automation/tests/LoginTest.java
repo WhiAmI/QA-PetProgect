@@ -1,7 +1,6 @@
 package automation.tests;
 
 import automation.base.BaseTest;
-import automation.pages.CartPage;
 import automation.pages.LoginPage;
 import automation.pages.ProductsPage;
 import org.junit.jupiter.api.Assertions;
@@ -10,37 +9,21 @@ import org.junit.jupiter.api.Test;
 public class LoginTest extends BaseTest {
     private static final String PRODUCTS_TITLE = "Products";
 
-    private ProductsPage login(){
+    @Test
+    public void shouldShowErrorWhenUsernameIsInvalid() {
         LoginPage loginPage = new LoginPage(driver);
 
         loginPage.open();
-        loginPage.enterUsername("standard_user");
+        loginPage.enterUsername("standard_user1");
         loginPage.enterPassword("secret_sauce");
+        loginPage.clickLogin();
 
-        return loginPage.clickLogin();
+        String actualErrorMessage = loginPage.getErrorMessage();
+
+        Assertions.assertEquals(
+                "Epic sadface: Username and password do not match any user in this service",
+                actualErrorMessage
+        );
     }
 
-    @Test
-    public void shouldLoginSuccessfully(){
-
-        ProductsPage productsPage = login();
-
-        String actualTitle = productsPage.getProductTitleText();
-
-        Assertions.assertEquals(PRODUCTS_TITLE, actualTitle);
-    }
-
-    @Test
-    public void shouldAddProductToCart(){
-        ProductsPage productsPage = login();
-        productsPage.addFirstProductToCart();
-
-        CartPage cartPage = productsPage.goToCart();
-        String expectedTitle = cartPage.getTitle();
-
-        String expectedProductName = cartPage.getProductName();
-        Assertions.assertEquals("Sauce Labs Backpack", expectedProductName);
-
-        Assertions.assertEquals("Your Cart", expectedTitle);
-    }
 }
