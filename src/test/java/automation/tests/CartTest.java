@@ -15,7 +15,7 @@ public class CartTest extends BaseTest {
     private ProductsPage productsPage;
 
     @BeforeEach
-    public void setUp() {
+    public void loginBeforeTest() {
         productsPage = login("standard_user", "secret_sauce");
     }
 
