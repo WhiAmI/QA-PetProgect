@@ -15,6 +15,7 @@ public class ProductsPage extends BasePage {
     private final By cartButton = By.className("shopping_cart_link");
     private final By sortList = By.className("product_sort_container");
     private final By productPrices = By.className("inventory_item_price");
+    private final By productName = By.className("inventory_item_name");
 
     public ProductsPage(WebDriver driver) {
         super(driver);
@@ -51,6 +52,16 @@ public class ProductsPage extends BasePage {
                 .map(WebElement::getText)
                 .map(price -> price.replace("$", ""))
                 .map(Double::parseDouble)
+                .toList();
+    }
+
+    public List<String> getProductsName(){
+        waitForVisibility(productName);
+
+        return driver.findElements(productName)
+                .stream()
+                .map(WebElement::getText)
+                .map(String::toLowerCase)
                 .toList();
     }
 }
