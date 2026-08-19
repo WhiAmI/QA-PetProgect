@@ -14,12 +14,16 @@ public class ProductsTest extends BaseTest {
 
     final String USERNAME = "standard_user";
     final String PASSWORD = "secret_sauce";
+    final String sortLowToHigh = "Price (low to high)";
+    final String sortHighToLow = "Price (high to low)";
+    final String sortAtoZ = "Name (A to Z)";
+    final String sortZtoA = "Name (Z to A)";
 
     @Test
     public void shouldSortProductsByPriceLowToHigh() {
         ProductsPage productsPage = login(USERNAME, PASSWORD);
 
-        productsPage.sortByVisibleText("Price (low to high)");
+        productsPage.sortByVisibleText(sortLowToHigh);
 
         List<Double> actualPrices = productsPage.getProductPrices();
 
@@ -33,7 +37,7 @@ public class ProductsTest extends BaseTest {
     public void shouldSortProductsByPriceHighToLow() {
         ProductsPage productsPage = login(USERNAME, PASSWORD);
 
-        productsPage.sortByVisibleText("Price (high to low)");
+        productsPage.sortByVisibleText(sortHighToLow);
 
         List<Double> actualPrices = productsPage.getProductPrices();
 
@@ -47,7 +51,7 @@ public class ProductsTest extends BaseTest {
     public void shouldSortProductsByNameNameAtoZ(){
         ProductsPage productsPage = login(USERNAME, PASSWORD);
 
-        productsPage.sortByVisibleText("Name (A to Z)");
+        productsPage.sortByVisibleText(sortAtoZ);
 
         List<String> actualName = productsPage.getProductsName();
 
@@ -61,7 +65,7 @@ public class ProductsTest extends BaseTest {
     public void shouldSortProductsByNameNameZtoA(){
         ProductsPage productsPage = login(USERNAME, PASSWORD);
 
-        productsPage.sortByVisibleText("Name (Z to A)");
+        productsPage.sortByVisibleText(sortZtoA);
 
         List<String> actualName = productsPage.getProductsName();
 
