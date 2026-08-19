@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ProductsTest extends BaseTest {
@@ -20,6 +21,20 @@ public class ProductsTest extends BaseTest {
 
         List<Double> expectedPrices = new ArrayList<>(actualPrices);
         expectedPrices.sort(Double::compareTo);
+
+        Assertions.assertEquals(expectedPrices, actualPrices);
+    }
+
+    @Test
+    public void shouldSortProductsByPriceHighToLow() {
+        ProductsPage productsPage = login("standard_user", "secret_sauce");
+
+        productsPage.sortByVisibleText("Price (high to low)");
+
+        List<Double> actualPrices = productsPage.getProductPrices();
+
+        List<Double> expectedPrices = new ArrayList<>(actualPrices);
+        expectedPrices.sort(Collections.reverseOrder());
 
         Assertions.assertEquals(expectedPrices, actualPrices);
     }
