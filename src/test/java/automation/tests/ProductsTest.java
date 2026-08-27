@@ -1,6 +1,7 @@
 package automation.tests;
 
 import automation.base.BaseTest;
+import automation.pages.CartBadgePage;
 import automation.pages.ProductsPage;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -12,12 +13,12 @@ import java.util.List;
 
 public class ProductsTest extends BaseTest {
 
-    final String USERNAME = "standard_user";
-    final String PASSWORD = "secret_sauce";
-    final String sortLowToHigh = "Price (low to high)";
-    final String sortHighToLow = "Price (high to low)";
-    final String sortAtoZ = "Name (A to Z)";
-    final String sortZtoA = "Name (Z to A)";
+    private static final String USERNAME = "standard_user";
+    private static final String PASSWORD = "secret_sauce";
+    private static final String sortLowToHigh = "Price (low to high)";
+    private static final String sortHighToLow = "Price (high to low)";
+    private static final String sortAtoZ = "Name (A to Z)";
+    private static final String sortZtoA = "Name (Z to A)";
 
     @Test
     public void shouldSortProductsByPriceLowToHigh() {
@@ -53,7 +54,7 @@ public class ProductsTest extends BaseTest {
 
         productsPage.sortByVisibleText(sortAtoZ);
 
-        List<String> actualName = productsPage.getProductsName();
+        List<String> actualName = productsPage.getProductsNames();
 
         List<String> expectedName = new ArrayList<>(actualName);
         expectedName.sort(Comparator.naturalOrder());
@@ -67,11 +68,47 @@ public class ProductsTest extends BaseTest {
 
         productsPage.sortByVisibleText(sortZtoA);
 
-        List<String> actualName = productsPage.getProductsName();
+        List<String> actualName = productsPage.getProductsNames();
 
         List<String> expectedName = new ArrayList<>(actualName);
         expectedName.sort(Comparator.reverseOrder());
 
         Assertions.assertEquals(expectedName, actualName);
+    }
+
+    @Test
+    public void shouldAddAllProductsToCart() {
+
+        ProductsPage productsPage = login(USERNAME, PASSWORD);
+
+        // 1. Запоминаем все товары ДО добавления
+        List<String> expectedProductNames = productsPage.getProductsNames();
+
+        List<Double> expectedProductPrices = productsPage.getProductPrices();
+
+        // 2. Добавляем ВСЕ товары
+        productsPage.addAllProductsToCart();
+
+        // 3. Можно проверить количество товаров в badge
+        Assertions.assertEquals(expectedProductNames.size(),
+                                productsPage.getCartBadgeCount()
+        );
+
+        // 4. Переходим в корзину
+        CartBadgePage cartBadgePage = productsPage.goToCartBadge();
+
+        // 5. Получаем то, что реально оказалось в корзине
+        List<String> actualProductNames = cartBadgePage.getProductsNames();
+
+        List<Double> actualProductPrices = cartBadgePage.getProductPrices();
+
+        // 6. Сравниваем
+        Assertions.assertEquals(expectedProductNames,
+                                actualProductNames
+        );
+
+        Assertions.assertEquals(expectedProductPrices,
+                actualProductPrices
+        );
     }
 }
